@@ -58,7 +58,7 @@ public class Patches {
 
         if (toX < minX) {
             if (wrapX) {
-                return maxX + (toX - minX);
+                return maxX + (toX  - minX);
             } else {
                 return minX;
             }
@@ -80,14 +80,14 @@ public class Patches {
 
         if (toY < minY) {
             if (wrapY) {
-                return maxY + (toY - minY);
+                return maxY - (toY + minY);
             } else {
                 return minY;
             }
         } else {
             if (toY >= maxY) {
                 if (wrapY) {
-                    return minY - (toY - maxY);
+                    return minY + (toY - maxY);
                 } else {
                     return maxY;
                 }

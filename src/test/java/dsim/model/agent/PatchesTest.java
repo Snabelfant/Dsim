@@ -105,41 +105,13 @@ public class PatchesTest {
     @Test
     public void testJumpWithWrap() {
         Position from = new Position(0, 0);
-        Position to = wrappedPatches.jump(from, 0, 0);
-        assertThat(to, is(from));
+        Position to = wrappedPatches.jump(from, 10, 0);
+        assertThat(to, is(new Position(0,-1)));
 
-        from = new Position(0, 0);
-        to = wrappedPatches.jump(from, 3, 0);
-        assertThat(to, is(new Position(0, 3)));
+         from = new Position(0, 0);
+         to = wrappedPatches.jump(from, 10 * 17, 0);
+        assertThat(to, is(new Position(0,-1)));
 
-        from = new Position(0, 0);
-        to = wrappedPatches.jump(from, 1, Util.toRadians(45));
-        assertThat(to, is(new Position(0.70710, 0.70710)));
-
-        from = new Position(0, 0);
-        to = wrappedPatches.jump(from, 3, Util.toRadians(90));
-        assertThat(to, is(new Position(3, 0)));
-
-        from = new Position(0, 0);
-        to = wrappedPatches.jump(from, 1, Util.toRadians(135));
-        assertThat(to, is(new Position(0.70710, -0.70710)));
-
-        from = new Position(0, 0);
-        to = wrappedPatches.jump(from, 3, Util.toRadians(180));
-        assertThat(to, is(new Position(0, -3)));
-
-        from = new Position(0, 0);
-        to = wrappedPatches.jump(from, 1, Util.toRadians(225));
-        assertThat(to, is(new Position(-0.70710, -0.70710)));
-
-
-        from = new Position(0, 0);
-        to = wrappedPatches.jump(from, 3, Util.toRadians(270));
-        assertThat(to, is(new Position(-3, 0)));
-
-        from = new Position(0, 0);
-        to = wrappedPatches.jump(from, 1, Util.toRadians(315));
-        assertThat(to, is(new Position(-0.70710, 0.70710)));
     }
 
 }
