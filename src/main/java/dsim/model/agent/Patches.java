@@ -8,10 +8,10 @@ import java.awt.*;
  * Created by Dag on 02.10.2017.
  */
 public class Patches {
-    double minX;
-    double minY;
-    double maxX;
-    double maxY;
+    private double minX;
+    private double minY;
+    private double maxX;
+    private double maxY;
     private Patch[][] patches;
     private int minIndexX;
     private int minIndexY;
@@ -22,12 +22,12 @@ public class Patches {
     private boolean wrapX;
     private boolean wrapY;
 
-    public Patches(int rows, int cols, boolean wrapX, boolean wrapY) {
+    public Patches(int cols, int rows, boolean wrapX, boolean wrapY) {
         this.rows = rows;
         this.cols = cols;
         this.wrapX = wrapX;
         this.wrapY = wrapY;
-        patches = new Patch[rows][cols];
+        patches = new Patch[cols][rows];
         minIndexX = -cols / 2;
         maxIndexX = cols / 2;
         minIndexY = -rows / 2;
@@ -35,10 +35,9 @@ public class Patches {
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                patches[row][col] = new Patch(col + minIndexX, maxIndexY - row);
+                patches[col][row] = new Patch(col + minIndexX, maxIndexY - row);
             }
         }
-
         minX = minIndexX - 0.5;
         maxX = maxIndexX + 0.5;
         minY = minIndexY - 0.5;
@@ -54,18 +53,18 @@ public class Patches {
     }
 
     private double xJumpWithTopology(double fromX, double distance, double headingInRads) {
-        double toX = xJump(distance, headingInRads) + fromX;
+        double toX = (xJump(distance, headingInRads) + fromX) % cols;
 
         if (toX < minX) {
             if (wrapX) {
-                return maxX + (toX  - minX);
+                return maxX - (-toX  + minX);
             } else {
                 return minX;
             }
         } else {
-            if (toX >= maxX) {
+            if (toX > maxX) {
                 if (wrapX) {
-                    return minX - (toX - maxX);
+                    return minX + (toX - maxX);
                 } else {
                     return maxX;
                 }
@@ -76,16 +75,16 @@ public class Patches {
     }
 
     private double yJumpWithTopology(double fromY, double distance, double headingInRads) {
-        double toY = yJump(distance, headingInRads) + fromY;
+        double toY = (yJump(distance, headingInRads) + fromY ) % rows;
 
         if (toY < minY) {
             if (wrapY) {
-                return maxY - (toY + minY);
+                return maxY - (-toY + minY);
             } else {
                 return minY;
             }
         } else {
-            if (toY >= maxY) {
+            if (toY > maxY) {
                 if (wrapY) {
                     return minY + (toY - maxY);
                 } else {
@@ -97,18 +96,24 @@ public class Patches {
         }
     }
 
+    public Patch getPatchAt(Position position) {
+        int patchX = (int) (Math.round(position.getX()) - minIndexX);
+        int patchY = (int) (maxIndexY -Math.round(position.getY()));
+        return patches[patchX][patchY];
+    }
+
     public Position jump(Position from, double distance, double headingInRads) {
         double toX = xJumpWithTopology(from.getX(), distance, headingInRads);
         double toY = yJumpWithTopology(from.getY(), distance, headingInRads);
         return new Position(toX, toY);
     }
 
-    public Color getDisplayColor(int physicalRow, int physicalCol) {
-        return patches[physicalRow][physicalCol].getDisplayColor();
+    public Color getDisplayColor(int physicalCol, int physicalRow) {
+        return patches[physicalCol][physicalRow].getDisplayColor();
     }
 
 
-    public Patch getPatchByPhysicalIndex(int physicalRow, int physicalCol) {
-        return patches[physicalRow][physicalCol];
+    public Patch getPatchByPhysicalIndex(int physicalCol, int physicalRow) {
+        return patches[physicalCol][physicalRow];
     }
 }

@@ -15,6 +15,11 @@ public class Patch implements Agent {
         this.color = Color.BLACK;
      }
 
+    @Override
+    public String toString() {
+        return "P:" + x + "/" +y;
+    }
+
     public int getX() {
         return x;
     }

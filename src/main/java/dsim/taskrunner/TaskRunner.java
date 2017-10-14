@@ -11,19 +11,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class TaskRunner {
     private AtomicInteger nextTaskId = new AtomicInteger(0);
-    private AtomicInteger noOfActiveTasks = new AtomicInteger(0);
     private ExecutorService executorService;
 
     public TaskRunner(int maxThreads) {
         executorService = Executors.newFixedThreadPool(maxThreads);
     }
 
-    public int getNoOfActiveTasks() {
-        return noOfActiveTasks.get();
-    }
-
     public void submit(Procedure procedure) {
-        noOfActiveTasks.getAndIncrement();
         Task task = new Task(procedure);
         executorService.submit(task);
     }
@@ -44,8 +38,12 @@ public class TaskRunner {
         @Override
         public void run() {
             procedure.execute();
-            noOfActiveTasks.decrementAndGet();
             if (procedure.isForever()) {
+                try {
+                    Thread.sleep(5);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 executorService.submit(this);
             }
         }
