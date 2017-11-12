@@ -45,6 +45,14 @@ public class Turtle extends TurtleBase {
         setPatchColor(color);
     }
 
+    public int pxcor() {
+        return patchHere().pxcor();
+    }
+
+    public int pycor() {
+        return patchHere().pycor();
+    }
+
     public void stamp(Color color) {
         setPatchColor(color);
     }

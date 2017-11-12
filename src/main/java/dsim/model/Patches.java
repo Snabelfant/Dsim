@@ -35,6 +35,7 @@ public class Patches {
         minIndexY = -rows / 2;
         maxIndexY = rows / 2;
 
+        System.out.println(minIndexX + " " + maxIndexX + " " + minIndexY + " " + maxIndexY);
         patchesAsList = new ArrayList<>();
 
         for (int row = 0; row < rows; row++) {
@@ -159,8 +160,4 @@ public class Patches {
         return patches[physicalCol][physicalRow];
     }
 
-    void placeTurtle(TurtleBase turtle) {
-        PatchBase patch = getPatchAt(turtle.getPosition());
-        patch.placeTurtle(turtle);
-    }
 }

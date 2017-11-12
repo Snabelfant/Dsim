@@ -2,9 +2,7 @@ package dsim;
 
 import dsim.commands.ObserverProcedure;
 import dsim.commands.TurtlesProcedure;
-import dsim.dictionary.Common;
-import dsim.dictionary.Observer;
-import dsim.dictionary.Turtle;
+import dsim.dictionary.*;
 import dsim.model.Colors;
 import dsim.model.World;
 import dsim.taskrunner.TaskRunner;
@@ -28,7 +26,7 @@ public class Dsim {
         taskRunner.submit(new ObserverProcedure() {
             @Override
             public void runObserver(Observer o, Common c) {
-                o.createTurtles(3, t -> t.xcor(c.random(cols / 2)));
+                o.createTurtles(3, t -> t.xcor(c.randomPxcor()));
             }
 
             @Override
@@ -40,7 +38,7 @@ public class Dsim {
         taskRunner.submit(new ObserverProcedure(true) {
             @Override
             public void runObserver(Observer o, Common c) {
-                System.out.println("Sort=" + c.countPatches((p, c1) -> p.pcolor() == Color.BLACK));
+                System.out.println("Sort=" + c.count(c.patches(), (p, c1) -> p.pcolor() == Color.BLACK));
                 c.sleep(3000);
             }
 
@@ -54,7 +52,8 @@ public class Dsim {
             @Override
             public void runObserver(Observer o, Common c) {
                 Color color = Colors.randomColorNotBlack();
-                c.askPatches((p, c1) -> p.pcolor(color));
+                PatchPredicate predicate = (p, c1) -> p.pycor() == c.maxPycor() || p.pycor() == c.minPycor() || p.pxcor() == c.maxPxcor() || p.pxcor() == c.minPxcor();
+                c.ask(c.patches(predicate), (p, c1) -> p.pcolor(color));
                 c.sleep(5000);
             }
 
@@ -64,19 +63,24 @@ public class Dsim {
             }
         });
 
-        ObserverProcedure observerProcedure2 = new ObserverProcedure(true) {
-            private int sleep = 100;
 
+        ObserverProcedure observerProcedure2 = new ObserverProcedure(true) {
             @Override
             public void runObserver(Observer o, Common c) {
-                int row = c.random(rows);
-                int col = c.random(cols);
-                    World.setPatchColor(col, row, Color.MAGENTA);
+                int x = c.randomPxcor();
+                int y = c.randomPycor();
+                Patch patch = c.patch(x, y);
 
-                row = c.random(rows);
-                col = c.random(cols);
-                if (World.getPatchColor(col, row).equals(Color.BLACK) || World.getPatchColor(col, row).equals(Color.GRAY)) {
-                    World.setPatchColor(col, row, Color.CYAN);
+                if (patch.pcolor().equals(Color.BLACK) || patch.pcolor().equals(Color.GRAY)) {
+                    patch.pcolor(Color.CYAN);
+                }
+
+                x = c.randomPxcor();
+                y = c.randomPycor();
+                patch = c.patch(x, y);
+
+                if (patch.pcolor().equals(Color.BLACK) || patch.pcolor().equals(Color.GRAY)) {
+                    patch.pcolor(Color.MAGENTA);
                 }
             }
 
@@ -85,6 +89,7 @@ public class Dsim {
                 return "O";
             }
         };
+
         taskRunner.submit(observerProcedure2);
 
         TurtlesProcedure turtlesProcedure = new TurtlesProcedure(true) {
