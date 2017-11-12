@@ -1,26 +1,29 @@
 package dsim.view;
 
-import dsim.model.agent.Patch;
+import dsim.model.PatchBase;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
  * Created by Dag on 04.10.2017.
  */
-class PatchPanel extends JPanel {
-    private static  int x = 0;
-    private Patch patch;
+class PatchPanel {
+    private final int physY;
+    private int physX;
+    private int size;
+    private PatchBase patch;
 
-    PatchPanel(Patch patch) {
+    PatchPanel(PatchBase patch, int physX, int physY, int size) {
         this.patch = patch;
+        this.physX = physX;
+        this.physY = physY;
+        this.size = size;
     }
 
-     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-         setBackground(patch.getDisplayColor());
+    void paint(Graphics g) {
+//        System.out.println("P" + physX + "/" + physY + "/" + patch.getDisplayColor());
+
+        g.setColor(patch.getDisplayColor());
+        g.fillRect(physX, physY, size, size);
     }
-
-
 }

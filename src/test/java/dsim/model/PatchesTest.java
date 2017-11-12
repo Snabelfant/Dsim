@@ -1,7 +1,6 @@
-package dsim.model.agent;
+package dsim.model;
 
-import dsim.model.Position;
-import dsim.util.Util;
+import dsim.dictionary.Patch;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;

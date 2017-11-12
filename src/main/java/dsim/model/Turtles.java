@@ -1,4 +1,6 @@
-package dsim.model.agent;
+package dsim.model;
+
+import dsim.dictionary.Turtle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +11,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Turtles {
     private static AtomicInteger nextTurtleId = new AtomicInteger(0);
-    private List<Turtle> turtles = new ArrayList<>();
+    private List<TurtleBase> turtles = new ArrayList<>();
 
-    public List<Turtle> getTurtles() {
+    public List<TurtleBase> getTurtles() {
         return turtles;
     }
 
-    public Turtle createTurtle() {
+    public TurtleBase createTurtle() {
         Turtle turtle = new Turtle(nextTurtleId.getAndIncrement());
         turtles.add(turtle);
         return turtle;

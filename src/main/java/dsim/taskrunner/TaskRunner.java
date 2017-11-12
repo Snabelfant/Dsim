@@ -40,7 +40,7 @@ public class TaskRunner {
             procedure.execute();
             if (procedure.isForever()) {
                 try {
-                    Thread.sleep(5);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

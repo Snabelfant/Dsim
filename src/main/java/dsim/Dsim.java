@@ -2,14 +2,15 @@ package dsim;
 
 import dsim.commands.ObserverProcedure;
 import dsim.commands.TurtlesProcedure;
+import dsim.dictionary.Common;
+import dsim.dictionary.Observer;
+import dsim.dictionary.Turtle;
 import dsim.model.World;
-import dsim.model.agent.Turtle;
 import dsim.taskrunner.TaskRunner;
-import dsim.view.ViewX;
-import dsim.view.View2;
+import dsim.util.Util;
+import dsim.view.View;
 
 import java.awt.*;
-import java.util.Random;
 
 /**
  * Created by Dag on 30.09.2017.
@@ -17,22 +18,34 @@ import java.util.Random;
 public class Dsim {
 
     public static void main(String... params) throws InterruptedException {
-        int rows = 181;
-        int cols = 171;
-        World.create(cols,rows, true, true);
-        View2.create(5, cols,rows);
+        int rows = 161;
+        int cols = 157;
+        World.create(cols, rows, true, true);
+        View.create(6, cols, rows);
 
         System.out.println("Starter");
-        Random r = new Random();
 
         TaskRunner taskRunner = new TaskRunner(3);
 
-        ObserverProcedure observerProcedure1 = new ObserverProcedure(true) {
-            private int sleep = 10;
+        taskRunner.submit(new ObserverProcedure() {
             @Override
             public void run() {
-                int row = r.nextInt(rows);
-                int col = r.nextInt(cols);
+                Observer.createTurtles(10, t -> t.xcor(Common.random(cols / 2)));
+            }
+
+            @Override
+            public String getId() {
+                return "O1";
+            }
+        });
+
+        ObserverProcedure observerProcedure1 = new ObserverProcedure(true) {
+            private int sleep = 10;
+
+            @Override
+            public void run() {
+                int row = Util.nextRandomInt(0, rows);
+                int col = Util.nextRandomInt(0, cols);
 //            Thread.sleep(4000);
                 World.setPatchColor(col, row, Color.YELLOW);
                 World.tick();
@@ -40,9 +53,9 @@ public class Dsim {
                     Thread.sleep(sleep);
                 } catch (InterruptedException e) {
                 }
-                row = r.nextInt(rows);
-                col = r.nextInt(cols);
-                World.setPatchColor(col,row,Color.GREEN);
+                row = Util.nextRandomInt(0, rows);
+                col = Util.nextRandomInt(0, cols);
+                World.setPatchColor(col, row, Color.GREEN);
             }
 
             @Override
@@ -50,23 +63,23 @@ public class Dsim {
                 return "O";
             }
         };
-        taskRunner.submit(observerProcedure1);
-       ObserverProcedure observerProcedure2 = new ObserverProcedure(true) {
+//        taskRunner.submit(observerProcedure1);
+        ObserverProcedure observerProcedure2 = new ObserverProcedure(true) {
             private int sleep = 100;
+
             @Override
             public void run() {
-                int row = r.nextInt(rows);
-                int col = r.nextInt(cols);
-//            Thread.sleep(4000);
-                World.setPatchColor(col,row, Color.MAGENTA);
-                World.tick();
-                try {
-                    Thread.sleep(sleep);
-                } catch (InterruptedException e) {
+                int row = Util.nextRandomInt(0, rows);
+                int col = Util.nextRandomInt(0, cols);
+                if (World.getPatchColor(col, row).equals(Color.BLACK) || World.getPatchColor(col, row).equals(Color.GRAY)) {
+                    World.setPatchColor(col, row, Color.MAGENTA);
                 }
-                row = r.nextInt(rows);
-                col = r.nextInt(cols);
-                World.setPatchColor(col,row, Color.CYAN);
+
+                row = Util.nextRandomInt(0, rows);
+                col = Util.nextRandomInt(0, cols);
+                if (World.getPatchColor(col, row).equals(Color.BLACK) || World.getPatchColor(col, row).equals(Color.GRAY)) {
+                    World.setPatchColor(col, row, Color.CYAN);
+                }
             }
 
             @Override
@@ -74,11 +87,11 @@ public class Dsim {
                 return "O";
             }
         };
-        taskRunner.submit(observerProcedure2);
+//        taskRunner.submit(observerProcedure2);
 
-        World.createTurtle();
         TurtlesProcedure turtlesProcedure = new TurtlesProcedure(true) {
-            double turn=0.001;
+            double turn = 0.001;
+
             @Override
             public String getId() {
                 return "T";
@@ -86,12 +99,28 @@ public class Dsim {
 
             @Override
             public void runTurtle(Turtle turtle) {
-                turtle.jump(1);
-                turtle.turnRight(turn);
-                turn += 0.0001;
+//                turtle.jump(1);
+                turtle.forward(1.4);
+
+                if (turtle.pcolor().equals(Color.MAGENTA)) {
+                    turtle.stamp(Color.YELLOW);
+                } else {
+                    turtle.stamp(Color.GRAY);
+                }
+                turtle.right(turn);
+                turn += 0.01;
+
+                if (turn > 10) {
+                    turn = 0.001;
+                }
+//                System.out.println(turtle);
+//                World.tick();
             }
         };
 
         taskRunner.submit(turtlesProcedure);
+
+
+        View.startRepainter(30);
     }
 }

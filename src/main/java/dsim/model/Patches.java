@@ -1,6 +1,6 @@
-package dsim.model.agent;
+package dsim.model;
 
-import dsim.model.Position;
+import dsim.dictionary.Patch;
 
 import java.awt.*;
 
@@ -44,6 +44,38 @@ public class Patches {
         maxY = maxIndexY + 0.5;
     }
 
+    protected double getMinX() {
+        return minX;
+    }
+
+    protected double getMinY() {
+        return minY;
+    }
+
+    protected double getMaxX() {
+        return maxX;
+    }
+
+    protected double getMaxY() {
+        return maxY;
+    }
+
+    protected int getMinIndexX() {
+        return minIndexX;
+    }
+
+    protected int getMinIndexY() {
+        return minIndexY;
+    }
+
+    protected int getMaxIndexX() {
+        return maxIndexX;
+    }
+
+    protected int getMaxIndexY() {
+        return maxIndexY;
+    }
+
     private double xJump(double distance, double headingInRads) {
         return distance * Math.sin(headingInRads);
     }
@@ -57,7 +89,7 @@ public class Patches {
 
         if (toX < minX) {
             if (wrapX) {
-                return maxX - (-toX  + minX);
+                return maxX - (-toX + minX);
             } else {
                 return minX;
             }
@@ -75,7 +107,7 @@ public class Patches {
     }
 
     private double yJumpWithTopology(double fromY, double distance, double headingInRads) {
-        double toY = (yJump(distance, headingInRads) + fromY ) % rows;
+        double toY = (yJump(distance, headingInRads) + fromY) % rows;
 
         if (toY < minY) {
             if (wrapY) {
@@ -96,24 +128,28 @@ public class Patches {
         }
     }
 
-    public Patch getPatchAt(Position position) {
+    Patch getPatchAt(Position position) {
         int patchX = (int) (Math.round(position.getX()) - minIndexX);
-        int patchY = (int) (maxIndexY -Math.round(position.getY()));
+        int patchY = (int) (maxIndexY - Math.round(position.getY()));
         return patches[patchX][patchY];
     }
 
-    public Position jump(Position from, double distance, double headingInRads) {
+    Position jump(Position from, double distance, double headingInRads) {
         double toX = xJumpWithTopology(from.getX(), distance, headingInRads);
         double toY = yJumpWithTopology(from.getY(), distance, headingInRads);
         return new Position(toX, toY);
     }
 
-    public Color getDisplayColor(int physicalCol, int physicalRow) {
+    Color getDisplayColor(int physicalCol, int physicalRow) {
         return patches[physicalCol][physicalRow].getDisplayColor();
     }
 
-
-    public Patch getPatchByPhysicalIndex(int physicalCol, int physicalRow) {
+    Patch getPatchByPhysicalIndex(int physicalCol, int physicalRow) {
         return patches[physicalCol][physicalRow];
+    }
+
+    void placeTurtle(TurtleBase turtle) {
+        PatchBase patch = getPatchAt(turtle.getPosition());
+        patch.placeTurtle(turtle);
     }
 }
