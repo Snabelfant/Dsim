@@ -9,10 +9,9 @@ import dsim.dictionary.TurtleCommand;
 public class ObserverBase implements Agent {
 
 
-    protected static TurtleBase createTurtle(TurtleCommand command) {
+    protected TurtleBase createTurtle(TurtleCommand command) {
         TurtleBase turtle = World.turtles().createTurtle();
         command.run((Turtle) turtle);
-        World.patches().placeTurtle(turtle);
         return turtle;
 
     }

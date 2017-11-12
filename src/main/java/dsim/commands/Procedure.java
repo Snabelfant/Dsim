@@ -15,7 +15,6 @@ public abstract class Procedure {
     public abstract String getId();
 
     public void execute() {
-//        System.out.println("Kjører " + getId() + "...");
         run();
     }
 

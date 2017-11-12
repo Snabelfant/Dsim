@@ -21,8 +21,6 @@ class PatchPanel {
     }
 
     void paint(Graphics g) {
-//        System.out.println("P" + physX + "/" + physY + "/" + patch.getDisplayColor());
-
         g.setColor(patch.getDisplayColor());
         g.fillRect(physX, physY, size, size);
     }

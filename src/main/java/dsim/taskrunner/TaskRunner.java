@@ -37,14 +37,14 @@ public class TaskRunner {
 
         @Override
         public void run() {
-            procedure.execute();
-            if (procedure.isForever()) {
-                try {
+            try {
+                procedure.execute();
+                if (procedure.isForever()) {
                     Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    executorService.submit(this);
                 }
-                executorService.submit(this);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

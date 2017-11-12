@@ -1,5 +1,7 @@
 package dsim.model;
 
+import dsim.dictionary.Common;
+import dsim.dictionary.Observer;
 import dsim.view.View;
 
 import java.awt.*;
@@ -12,10 +14,14 @@ public class World {
     private static World world;
     private Turtles turtles;
     private Patches patches;
+    private Observer observer;
+    private Common common;
 
     private World(int cols, int rows, boolean wrapX, boolean wrapY) {
         turtles = new Turtles();
         patches = new Patches(cols, rows, wrapX, wrapY);
+        observer = new Observer();
+        common = new Common(700);
     }
 
     public static void create(int cols, int rows, boolean wrapX, boolean wrapY) {
@@ -48,5 +54,13 @@ public class World {
 
     static Turtles turtles() {
         return world.turtles;
+    }
+
+    public static Observer getObserver() {
+        return (Observer) world.observer;
+    }
+
+    public static Common getCommon() {
+        return world.common;
     }
 }

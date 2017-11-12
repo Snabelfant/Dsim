@@ -26,6 +26,12 @@ public class Colors {
             };
 
 
+    public static Color randomColorNotBlack() {
+        Color color;
+        while ((color = randomColor()) == Color.BLACK) ;
+        return color;
+    }
+
     public static Color randomColor() {
         return COLORS[Util.nextRandomInt(0, COLORS.length)];
     }

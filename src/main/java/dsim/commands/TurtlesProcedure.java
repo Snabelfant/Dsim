@@ -1,9 +1,8 @@
 package dsim.commands;
 
+import dsim.dictionary.Common;
 import dsim.dictionary.Turtle;
 import dsim.model.World;
-
-import java.util.List;
 
 /**
  * Created by Dag on 05.10.2017.
@@ -14,9 +13,11 @@ public abstract class TurtlesProcedure extends Procedure {
         super(isForever);
     }
 
+    @Override
      void run() {
-         ((List<Turtle>) World.getTurtles()).forEach(this::runTurtle);
+//         System.out.println(World.getTurtles());
+        World.getTurtles().forEach(t -> runTurtle((Turtle) t, World.getCommon()));
      }
 
-    public abstract void runTurtle(Turtle turtle);
+    public abstract void runTurtle(Turtle turtle, Common common);
 }

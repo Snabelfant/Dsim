@@ -32,6 +32,7 @@ public class View extends JFrame {
 
     public static void create(int patchSize, int cols, int rows) {
         view = new View(patchSize, cols, rows);
+        view.isReady = true;
         EventQueue.invokeLater(() -> {
             view.setVisible(true);
             view.isReady = true;
@@ -50,7 +51,6 @@ public class View extends JFrame {
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-//                    System.out.println("REP");
                     view.panel.repaint();
                 }
             });

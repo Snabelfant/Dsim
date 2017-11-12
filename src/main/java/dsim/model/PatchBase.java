@@ -8,9 +8,9 @@ import java.util.List;
  * Created by Dag on 02.10.2017.
  */
 public class PatchBase implements Agent {
+    private final List<TurtleBase> turtlesHere;
     private int x;
     private int y;
-    private List<TurtleBase> turtlesHere;
     private Color color;
 
     protected PatchBase(int x, int y) {
@@ -22,7 +22,7 @@ public class PatchBase implements Agent {
 
     @Override
     public String toString() {
-        return "P:" + x + "/" + y;
+        return "P:" + x + "/" + y + "/" + turtlesHere.size() + "/" + getDisplayColor();
     }
 
     protected int getX() {
@@ -42,11 +42,18 @@ public class PatchBase implements Agent {
     }
 
     protected synchronized void placeTurtle(TurtleBase turtle) {
-        turtlesHere.add(turtle);
+        synchronized (turtlesHere) {
+            turtlesHere.add(turtle);
+        }
     }
 
     protected synchronized void removeTurtle(TurtleBase turtle) {
-        turtlesHere.remove(turtle);
+        synchronized (turtlesHere) {
+            boolean removed = turtlesHere.remove(turtle);
+            if (!removed) {
+                throw new RuntimeException("Ikke fjernet; " + this);
+            }
+        }
     }
 
     public synchronized Color getDisplayColor() {

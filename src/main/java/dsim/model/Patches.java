@@ -3,6 +3,8 @@ package dsim.model;
 import dsim.dictionary.Patch;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Dag on 02.10.2017.
@@ -13,6 +15,7 @@ public class Patches {
     private double maxX;
     private double maxY;
     private Patch[][] patches;
+    private List<Patch> patchesAsList;
     private int minIndexX;
     private int minIndexY;
     private int maxIndexX;
@@ -21,7 +24,6 @@ public class Patches {
     private int cols;
     private boolean wrapX;
     private boolean wrapY;
-
     public Patches(int cols, int rows, boolean wrapX, boolean wrapY) {
         this.rows = rows;
         this.cols = cols;
@@ -33,15 +35,24 @@ public class Patches {
         minIndexY = -rows / 2;
         maxIndexY = rows / 2;
 
+        patchesAsList = new ArrayList<>();
+
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                patches[col][row] = new Patch(col + minIndexX, maxIndexY - row);
+                Patch patch = new Patch(col + minIndexX, maxIndexY - row);
+                patches[col][row] = patch;
+                patchesAsList.add(patch);
             }
         }
+
         minX = minIndexX - 0.5;
         maxX = maxIndexX + 0.5;
         minY = minIndexY - 0.5;
         maxY = maxIndexY + 0.5;
+    }
+
+    List<Patch> getPatchesAsList() {
+        return patchesAsList;
     }
 
     protected double getMinX() {

@@ -5,7 +5,6 @@ package dsim.dictionary;
  */
 public interface TurtleCommand {
     TurtleCommand NONE = turtle -> {
-        System.out.println("NONE");
     };
 
     void run(Turtle turtle);

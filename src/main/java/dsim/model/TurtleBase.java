@@ -12,12 +12,11 @@ public class TurtleBase implements Agent {
     private double headingInRads;
     private Color color;
     private int id;
-
     protected TurtleBase(int id) {
         this.id = id;
         position = new Position(0, 0);
         headingInRads = toRadiansMod360(Util.nextRandomInt(0, 360));
-        color = Colors.randomColor();
+        color = Colors.randomColorNotBlack();
         getPatch().placeTurtle(this);
     }
 
@@ -33,7 +32,6 @@ public class TurtleBase implements Agent {
         getPatch().removeTurtle(this);
         position = World.patches().jump(position, distance, headingInRads);
         getPatch().placeTurtle(this);
-//        System.out.println("J " + this);
     }
 
     protected void setX(double x) {
@@ -41,7 +39,6 @@ public class TurtleBase implements Agent {
         position = new Position(x, position.getY());
         getPatch().placeTurtle(this);
     }
-
     protected Color getPatchColor() {
         return getPatch().getColor();
     }
@@ -64,7 +61,7 @@ public class TurtleBase implements Agent {
 
     @Override
     public String toString() {
-        return "T" + id + "/" + position + "/" + headingInRads;
+        return "T" + id + "/" + position + "/" + headingInRads + "/" + color + "/" + getPatch().toString();
     }
 
     Position getPosition() {
