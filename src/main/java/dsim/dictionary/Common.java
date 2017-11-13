@@ -26,6 +26,10 @@ public class Common extends CommonBase {
         return super.patches(PatchPredicate.TRUE);
     }
 
+    public List<Turtle> turtles() {
+        return super.turtles(TurtlePredicate.TRUE);
+    }
+
     public List<Patch> patches(PatchPredicate predicate) {
         return super.patches(predicate);
     }
@@ -34,8 +38,12 @@ public class Common extends CommonBase {
         return super.count(patches, predicate);
     }
 
-    public void ask(List<Patch> patches, PatchCommand patchCommand) {
-        super.ask(patches, patchCommand);
+    public void ask(List<Patch> patches, PatchCommand command) {
+        super.ask(patches, command);
+    }
+
+    public void ask(List<Turtle> turtles, TurtleCommand command) {
+        super.ask(turtles, command);
     }
 
     public void ask(Patch patch, PatchCommand patchCommand) {

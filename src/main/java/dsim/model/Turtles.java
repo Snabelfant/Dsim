@@ -11,9 +11,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Turtles {
     private static AtomicInteger nextTurtleId = new AtomicInteger(0);
-    private List<TurtleBase> turtles = new ArrayList<>();
+    private List<Turtle> turtles = new ArrayList<>();
 
-    public List<TurtleBase> getTurtles() {
+    public List<Turtle> asList() {
         return turtles;
     }
 

@@ -2,6 +2,7 @@ package dsim.model;
 
 import dsim.dictionary.Common;
 import dsim.dictionary.Observer;
+import dsim.dictionary.Turtle;
 import dsim.view.View;
 
 import java.awt.*;
@@ -16,20 +17,22 @@ public class World {
     private Patches patches;
     private Observer observer;
     private Common common;
+    private int tick;
 
     private World(int cols, int rows, boolean wrapX, boolean wrapY) {
         turtles = new Turtles();
         patches = new Patches(cols, rows, wrapX, wrapY);
         observer = new Observer();
         common = new Common(700);
+        tick = 0;
     }
 
     public static void create(int cols, int rows, boolean wrapX, boolean wrapY) {
         world = new World(cols, rows, wrapX, wrapY);
     }
 
-    public static List<? extends TurtleBase> getTurtles() {
-        return world.turtles.getTurtles();
+    public static List<Turtle> getTurtles() {
+        return world.turtles.asList();
     }
 
     public static void setPatchColor(int physicalCol, int physicalRow, Color color) {
@@ -44,7 +47,11 @@ public class World {
         return world.patches.getPatchByPhysicalIndex(physicalCol, physicalRow);
     }
 
+    public static int ticks() {
+        return world.tick;
+    }
     public static void tick() {
+        world.tick++;
         View.repaintView();
     }
 
@@ -62,5 +69,9 @@ public class World {
 
     public static Common getCommon() {
         return world.common;
+    }
+
+    public static void resetTicks() {
+        world.tick = 0;
     }
 }

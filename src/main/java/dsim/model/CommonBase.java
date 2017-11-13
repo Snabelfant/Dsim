@@ -1,8 +1,6 @@
 package dsim.model;
 
-import dsim.dictionary.Patch;
-import dsim.dictionary.PatchCommand;
-import dsim.dictionary.PatchPredicate;
+import dsim.dictionary.*;
 
 import java.util.List;
 import java.util.Random;
@@ -27,24 +25,40 @@ public class CommonBase {
     protected int count(List<Patch> patches, PatchPredicate predicate) {
         return (int) patches
                 .stream()
-                .filter(p -> predicate.evaluate(p, World.getCommon()))
+                .filter(predicate)
                 .count();
     }
 
     protected List<Patch> patches(PatchPredicate predicate) {
-        List<Patch> patches = World.patches().getPatchesAsList();
+        List<Patch> patches = World.patches().asList();
         if (predicate == PatchPredicate.TRUE) {
             return patches;
         }
 
         return patches
                 .stream()
-                .filter(p -> predicate.evaluate(p, World.getCommon()))
+                .filter(predicate)
                 .collect(Collectors.toList());
     }
 
-    protected void ask(List<Patch> patches, PatchCommand patchCommand) {
-        patches.forEach(p -> patchCommand.run(p, World.getCommon()));
+    protected List<Turtle> turtles(TurtlePredicate predicate) {
+        List<Turtle> turtles = World.turtles().asList();
+        if (predicate == TurtlePredicate.TRUE) {
+            return turtles;
+        }
+
+        return turtles
+                .stream()
+                .filter(predicate)
+                .collect(Collectors.toList());
+    }
+
+    protected void ask(List<Patch> patches, PatchCommand command) {
+        patches.forEach(command);
+    }
+
+    protected void ask(List<Turtle> turtles, TurtleCommand command) {
+        turtles.forEach(command);
     }
 
     protected Patch getPatchAt(Position position) {

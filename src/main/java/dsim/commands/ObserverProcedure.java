@@ -9,11 +9,12 @@ import dsim.model.World;
  */
 public abstract class ObserverProcedure extends Procedure {
 
-    public ObserverProcedure() {
-        super(false);
+    public ObserverProcedure(String id) {
+        super(id, false);
     }
-    public ObserverProcedure(boolean isForever) {
-        super(isForever);
+
+    public ObserverProcedure(String id, boolean isForever) {
+        super(id, isForever);
     }
 
     @Override

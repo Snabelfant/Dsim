@@ -1,128 +1,19 @@
 package dsim;
 
-import dsim.commands.ObserverProcedure;
-import dsim.commands.TurtlesProcedure;
-import dsim.dictionary.*;
-import dsim.model.Colors;
-import dsim.model.World;
-import dsim.taskrunner.TaskRunner;
-import dsim.view.View;
-
-import java.awt.*;
+import dsim.project.Project;
+import dsim.projects.Test;
+import dsim.projects.Utv;
 
 /**
  * Created by Dag on 30.09.2017.
  */
 public class Dsim {
-
     public static void main(String... params) throws InterruptedException {
-        int rows = 151;
-        int cols = 151;
-        World.create(cols, rows, true, true);
-        View.create(6, cols, rows);
+        Project test = new Test();
+        Project utv = new Utv();
 
-        TaskRunner taskRunner = new TaskRunner(3);
-
-        taskRunner.submit(new ObserverProcedure() {
-            @Override
-            public void runObserver(Observer o, Common c) {
-                o.createTurtles(3, t -> t.xcor(c.randomPxcor()));
-            }
-
-            @Override
-            public String getId() {
-                return "O1";
-            }
-        });
-
-        taskRunner.submit(new ObserverProcedure(true) {
-            @Override
-            public void runObserver(Observer o, Common c) {
-                System.out.println("Sort=" + c.count(c.patches(), (p, c1) -> p.pcolor() == Color.BLACK));
-                c.sleep(3000);
-            }
-
-            @Override
-            public String getId() {
-                return "O88";
-            }
-        });
-
-        taskRunner.submit(new ObserverProcedure(true) {
-            @Override
-            public void runObserver(Observer o, Common c) {
-                Color color = Colors.randomColorNotBlack();
-                PatchPredicate predicate = (p, c1) -> p.pycor() == c.maxPycor() || p.pycor() == c.minPycor() || p.pxcor() == c.maxPxcor() || p.pxcor() == c.minPxcor();
-                c.ask(c.patches(predicate), (p, c1) -> p.pcolor(color));
-                c.sleep(5000);
-            }
-
-            @Override
-            public String getId() {
-                return "O88";
-            }
-        });
-
-
-        ObserverProcedure observerProcedure2 = new ObserverProcedure(true) {
-            @Override
-            public void runObserver(Observer o, Common c) {
-                int x = c.randomPxcor();
-                int y = c.randomPycor();
-                Patch patch = c.patch(x, y);
-
-                if (patch.pcolor().equals(Color.BLACK) || patch.pcolor().equals(Color.GRAY)) {
-                    patch.pcolor(Color.CYAN);
-                }
-
-                x = c.randomPxcor();
-                y = c.randomPycor();
-                patch = c.patch(x, y);
-
-                if (patch.pcolor().equals(Color.BLACK) || patch.pcolor().equals(Color.GRAY)) {
-                    patch.pcolor(Color.MAGENTA);
-                }
-            }
-
-            @Override
-            public String getId() {
-                return "O";
-            }
-        };
-
-        taskRunner.submit(observerProcedure2);
-
-        TurtlesProcedure turtlesProcedure = new TurtlesProcedure(true) {
-            double turn = 0.001;
-
-            @Override
-            public String getId() {
-                return "T";
-            }
-
-            @Override
-            public void runTurtle(Turtle t, Common c) {
-//                turtle.jump(1);
-                t.forward(0.4);
-
-//                if (turtle.pcolor().equals(Color.MAGENTA)) {
-//                    turtle.stamp(Color.YELLOW);
-//                } else {
-//                    turtle.stamp(Color.GRAY);
-//                }
-                t.right(turn);
-                turn += 0.01;
-
-                if (turn > 10) {
-                    turn = 0.001;
-                }
-//                World.tick();
-            }
-        };
-
-        taskRunner.submit(turtlesProcedure);
-
-
-        View.startRepainter(30);
+//        test.run();
+        utv.run();
     }
+
 }

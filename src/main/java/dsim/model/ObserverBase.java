@@ -11,8 +11,16 @@ public class ObserverBase implements Agent {
 
     protected TurtleBase createTurtle(TurtleCommand command) {
         TurtleBase turtle = World.turtles().createTurtle();
-        command.run((Turtle) turtle);
+        command.accept((Turtle) turtle);
         return turtle;
 
+    }
+
+    public void resetTicks() {
+        World.resetTicks();
+    }
+
+    public void tick() {
+        World.tick();
     }
 }

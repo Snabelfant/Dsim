@@ -52,7 +52,7 @@ public class Patches {
         maxY = maxIndexY + 0.5;
     }
 
-    List<Patch> getPatchesAsList() {
+    public List<Patch> asList() {
         return patchesAsList;
     }
 

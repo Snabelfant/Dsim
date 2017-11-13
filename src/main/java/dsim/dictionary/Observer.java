@@ -15,4 +15,12 @@ public class Observer extends ObserverBase {
     public void createTurtles(int count) {
         createTurtles(count, TurtleCommand.NONE);
     }
+
+    public void tick() {
+        super.tick();
+    }
+
+    public void resetTicks() {
+        super.resetTicks();
+    }
 }

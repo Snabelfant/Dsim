@@ -9,13 +9,13 @@ import dsim.model.World;
  */
 public abstract class TurtlesProcedure extends Procedure {
 
-    public TurtlesProcedure(boolean isForever) {
-        super(isForever);
+    public TurtlesProcedure(String id, boolean isForever) {
+        super(id, isForever);
     }
 
     @Override
      void run() {
-//         System.out.println(World.getTurtles());
+//         System.out.println(World.asList());
         World.getTurtles().forEach(t -> runTurtle((Turtle) t, World.getCommon()));
      }
 
