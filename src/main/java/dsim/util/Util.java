@@ -16,4 +16,10 @@ public class Util {
     public static int nextRandomInt(int minInclusive, int maxExclusive) {
         return minInclusive + random.nextInt(maxExclusive - minInclusive);
     }
+
+    public static double toRadiansMod360(double degs) {
+        return Math.toRadians(degs % 360);
+    }
+
+
 }

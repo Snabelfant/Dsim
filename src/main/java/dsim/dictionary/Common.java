@@ -27,7 +27,7 @@ public class Common extends CommonBase {
     }
 
     public List<Turtle> turtles() {
-        return super.turtles(TurtlePredicate.TRUE);
+        return turtles(TurtlePredicate.TRUE);
     }
 
     public List<Patch> patches(PatchPredicate predicate) {

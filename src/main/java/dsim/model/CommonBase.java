@@ -2,24 +2,46 @@ package dsim.model;
 
 import dsim.dictionary.*;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class CommonBase {
+    private static final Color[] COLORS = new Color[]
+            {
+                    Color.RED,
+                    Color.BLUE,
+                    Color.YELLOW,
+                    Color.GREEN,
+                    Color.BLACK,
+                    Color.PINK,
+                    Color.ORANGE,
+                    Color.MAGENTA,
+                    Color.DARK_GRAY,
+                    Color.CYAN,
+                    Color.WHITE,
+                    Color.GRAY,
+                    Color.LIGHT_GRAY
+            };
     private static final double EPSILON = 0.00001;
-    private final Random random;
+    private static Random random = new Random(67777);
 
     protected CommonBase(int seed) {
-        random = new Random(seed);
+        random = new Random(67777);
     }
 
-    protected static boolean equals(double d1, double d2) {
-        return java.lang.Math.abs(d1 - d2) < EPSILON;
+    protected static Color randomColor() {
+        return COLORS[nextRandomInt(0, COLORS.length)];
     }
 
-    protected int nextRandomInt(int minInclusive, int maxExclusive) {
+    protected static int nextRandomInt(int minInclusive, int maxExclusive) {
         return minInclusive + random.nextInt(maxExclusive - minInclusive);
+    }
+
+    protected Color randomColorNotBlack() {
+        Color color;
+        while ((color = randomColor()) == Color.BLACK) ;
+        return color;
     }
 
     protected int count(List<Patch> patches, PatchPredicate predicate) {
@@ -30,27 +52,11 @@ public class CommonBase {
     }
 
     protected List<Patch> patches(PatchPredicate predicate) {
-        List<Patch> patches = World.patches().asList();
-        if (predicate == PatchPredicate.TRUE) {
-            return patches;
-        }
-
-        return patches
-                .stream()
-                .filter(predicate)
-                .collect(Collectors.toList());
+        return World.patches().filter(predicate);
     }
 
     protected List<Turtle> turtles(TurtlePredicate predicate) {
-        List<Turtle> turtles = World.turtles().asList();
-        if (predicate == TurtlePredicate.TRUE) {
-            return turtles;
-        }
-
-        return turtles
-                .stream()
-                .filter(predicate)
-                .collect(Collectors.toList());
+        return World.turtles().filter(predicate);
     }
 
     protected void ask(List<Patch> patches, PatchCommand command) {

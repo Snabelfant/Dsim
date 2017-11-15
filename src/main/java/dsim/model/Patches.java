@@ -1,10 +1,12 @@
 package dsim.model;
 
 import dsim.dictionary.Patch;
+import dsim.dictionary.PatchPredicate;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Dag on 02.10.2017.
@@ -24,6 +26,7 @@ public class Patches {
     private int cols;
     private boolean wrapX;
     private boolean wrapY;
+
     public Patches(int cols, int rows, boolean wrapX, boolean wrapY) {
         this.rows = rows;
         this.cols = cols;
@@ -55,6 +58,18 @@ public class Patches {
     public List<Patch> asList() {
         return patchesAsList;
     }
+
+    public List<Patch> filter(PatchPredicate predicate) {
+        if (predicate == PatchPredicate.TRUE) {
+            return patchesAsList;
+        }
+
+        return patchesAsList
+                .stream()
+                .filter(predicate)
+                .collect(Collectors.toList());
+    }
+
 
     protected double getMinX() {
         return minX;

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Dag on 02.10.2017.
  */
-public class PatchBase implements Agent {
+public class PatchBase extends Agent {
     private final List<TurtleBase> turtlesHere;
     private int x;
     private int y;

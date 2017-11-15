@@ -4,6 +4,8 @@ import dsim.model.TurtleBase;
 
 import java.awt.*;
 
+import static dsim.util.Util.toRadiansMod360;
+
 /**
  * Created by Dag on 30.09.2017.
  */
@@ -13,6 +15,21 @@ public class Turtle extends TurtleBase {
         super(id);
     }
 
+    public void define(String name) {
+        super.define(name);
+    }
+
+    public void set(String name, int value) {
+        super.set(name, value);
+    }
+
+    public int getInt(String name) {
+        return super.getInt(name);
+    }
+
+    public void add(String name, int value) {
+        set(name, getInt(name) + value);
+    }
     public void jump(double distance) {
         super.jump(distance);
     }
@@ -61,6 +78,14 @@ public class Turtle extends TurtleBase {
         setX(x);
     }
 
+    public void ycor(double y) {
+        setY(y);
+    }
+
+    public void setxy(double x, double y) {
+        setXY(x, y);
+    }
+
     public Patch patchHere() {
         return (Patch) getPatch();
     }
@@ -82,5 +107,10 @@ public class Turtle extends TurtleBase {
         }
 
         super.jump(rest);
+    }
+
+    public void define(String name, int value) {
+        super.define(name);
+        super.set(name, value);
     }
 }

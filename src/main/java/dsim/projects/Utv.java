@@ -14,8 +14,8 @@ import java.awt.*;
  * Created by Dag on 13.11.2017.
  */
 public class Utv extends Project {
-
-    public Utv() {
+    @Override
+    public void init() {
         addProcedure(
                 new ObserverProcedure("Tell sorte", true) {
                     @Override
@@ -62,11 +62,8 @@ public class Utv extends Project {
 
                 }
         );
-    }
 
-    @Override
-    protected ObserverProcedure go() {
-        return new ObserverProcedure("Kjør", true) {
+        addProcedure(new ObserverProcedure("Kjør", true) {
             public double turn = 0;
 
             @Override
@@ -84,18 +81,15 @@ public class Utv extends Project {
 
                 o.tick();
             }
-        };
-    }
+        });
 
-    @Override
-    protected ObserverProcedure setup() {
-        return new ObserverProcedure("Init") {
+        setSetup(new ObserverProcedure("Init") {
             @Override
             public void runObserver(Observer o, Common c) {
                 o.createTurtles(3, t -> t.xcor(c.randomPxcor()));
                 System.out.println("SETUP");
                 o.resetTicks();
             }
-        };
+        });
     }
 }

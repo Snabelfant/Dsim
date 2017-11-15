@@ -6,7 +6,7 @@ import dsim.dictionary.TurtleCommand;
 /**
  * Created by Dag on 11.11.2017.
  */
-public class ObserverBase implements Agent {
+public class ObserverBase extends Agent {
 
 
     protected TurtleBase createTurtle(TurtleCommand command) {
